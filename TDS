@@ -33,14 +33,14 @@ local Time =  function()
     return Stats["Time"].Text
 end
 
-Functions:Skip = function(WaveTime)
+function Functions:Skip(WaveTime)
     spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
         RSRF:InvokeServer("Voting", "Skip")
     end)
 end 
 
-Functions:Place = function(Tower, WaveTime, Position)
+function Functions:Place(Tower, WaveTime, Position)
 	spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
         local args = {
@@ -60,7 +60,7 @@ Functions:Place = function(Tower, WaveTime, Position)
 	end)
 end
 
-Functions:Upgrade = function(Tower, WaveTime)
+function Functions:Upgrade(Tower, WaveTime)
 	spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
         local args = {
@@ -75,7 +75,7 @@ Functions:Upgrade = function(Tower, WaveTime)
 	end)
 end
 
-Functions:Ability = function(Tower, WaveTime, Ability)
+function Functions:Ability(Tower, WaveTime, Ability)
 	spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
 		local args = {
@@ -91,7 +91,7 @@ Functions:Ability = function(Tower, WaveTime, Ability)
 	end)
 end
 
-Functions:Sell = function(Tower, WaveTime)
+function Functions:Sell(Tower, WaveTime)
 	spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
 		local args = {
@@ -103,6 +103,10 @@ Functions:Sell = function(Tower, WaveTime)
 		}
 		RSRF:InvokeServer(unpack(args))
 	end)
+end
+
+function Functions:Ping()
+   print("Pong") 
 end
 
 return Functions
