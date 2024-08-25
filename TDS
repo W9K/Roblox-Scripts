@@ -23,7 +23,7 @@ local Functions     = {}
 local RS   = game:WaitForChild('ReplicatedStorage')
 local RSRF = RS:WaitForChild("RemoteFunction")
 local RSRE = RS:WaitForChild("RemoteEvent")
-local Stats  = Player.PlayerGui:WaitForChild("GameGui").Health
+local Stats= Player.PlayerGui:WaitForChild("GameGui").Health
 
 local Wave =  function()
     return Stats["Wave"].Text:split(" ")[2]
