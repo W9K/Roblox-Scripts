@@ -8,7 +8,7 @@
     EX:
 
     Place("Scout", {"1", "01:00"}, {-10.048, 1.023, -24.551})
-    Upgrade(2, {"1", "01:00"})
+    Upgrade(1, {"1", "01:00"})
     Sell(1, {"1", "01:00"})
     Ability(1, {"1", "01:00"}, "Call Of Arms")
     Skip({"1", "00:40"})
@@ -33,14 +33,14 @@ local Time =  function()
     return Stats["Time"].Text
 end
 
-local Functions:Skip = function(WaveTime)
+Functions:Skip = function(WaveTime)
     spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
         RSRF:InvokeServer("Voting", "Skip")
     end)
 end 
 
-local Functions:Place = function(Tower, WaveTime, Position)
+Functions:Place = function(Tower, WaveTime, Position)
 	spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
         local args = {
@@ -60,7 +60,7 @@ local Functions:Place = function(Tower, WaveTime, Position)
 	end)
 end
 
-local Functions:Upgrade = function(Tower, WaveTime)
+Functions:Upgrade = function(Tower, WaveTime)
 	spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
         local args = {
@@ -75,7 +75,7 @@ local Functions:Upgrade = function(Tower, WaveTime)
 	end)
 end
 
-local Functions:Ability = function(Tower, WaveTime, Ability)
+Functions:Ability = function(Tower, WaveTime, Ability)
 	spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
 		local args = {
@@ -91,7 +91,7 @@ local Functions:Ability = function(Tower, WaveTime, Ability)
 	end)
 end
 
-local Functions:Sell = function(Tower, WaveTime)
+Functions:Sell = function(Tower, WaveTime)
 	spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
 		local args = {
@@ -104,4 +104,5 @@ local Functions:Sell = function(Tower, WaveTime)
 		RSRF:InvokeServer(unpack(args))
 	end)
 end
+
 return Functions
