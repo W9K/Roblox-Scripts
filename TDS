@@ -1,0 +1,107 @@
+--[[ 
+    Place("Tower", {"Wave", "Time"}, {Position})
+    Upgrade(TowerIndex, {"Wave", "Time"})
+    Sell(TowerIndex, {"Wave", Time})
+    Ability(TowerIndex,{"Wave", "Time"}, "AbilityName")
+    Skip({"Wave", "Time"})
+
+    EX:
+
+    Place("Scout", {"1", "01:00"}, {-10.048, 1.023, -24.551})
+    Upgrade(2, {"1", "01:00"})
+    Sell(1, {"1", "01:00"})
+    Ability(1, {"1", "01:00"}, "Call Of Arms")
+    Skip({"1", "00:40"})
+]]
+
+local Player 	= game:GetService("Players").LocalPlayer
+
+local Towers 	    = workspace.Towers
+local PlacedTowers  = {}
+local Functions     = {}
+
+local RS   = game:WaitForChild('ReplicatedStorage')
+local RSRF = RS:WaitForChild("RemoteFunction")
+local RSRE = RS:WaitForChild("RemoteEvent")
+local Stats  = Player.PlayerGui:WaitForChild("GameGui").Health
+
+local Wave =  function()
+    return Stats["Wave"].Text:split(" ")[2]
+end
+
+local Time =  function()
+    return Stats["Time"].Text
+end
+
+local Functions:Skip = function(WaveTime)
+    spawn(function()
+        repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
+        RSRF:InvokeServer("Voting", "Skip")
+    end)
+end 
+
+local Functions:Place = function(Tower, WaveTime, Position)
+	spawn(function()
+        repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
+        local args = {
+            [1] = "Troops",
+            [2] = "Place",
+            [3] = Tower,
+            [4] = {
+                ["Rotation"] = CFrame.new(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1),
+                ["Position"] = Vector3.new(Position[1], Position[2], Position[3]),
+            }
+        };
+        local placeCheck = nil
+        repeat task.wait()
+            placeCheck = RSRF:InvokeServer(unpack(args))
+        until placeCheck
+        table.insert(PlacedTowers,placeCheck)
+	end)
+end
+
+local Functions:Upgrade = function(Tower, WaveTime)
+	spawn(function()
+        repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
+        local args = {
+            [1] = "Troops",
+            [2] = "Upgrade",
+            [3] = "Set",
+            [4] = {
+                ["Troop"] = PlacedTowers[Tower],
+            }
+        }
+        RSRF:InvokeServer(unpack(args))
+	end)
+end
+
+local Functions:Ability = function(Tower, WaveTime, Ability)
+	spawn(function()
+        repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
+		local args = {
+			[1] = "Troops",
+			[2] = "Abilities",
+			[3] = "Activate",
+			[4] = {
+				["Troop"] = PlacedTowers[Tower],
+				["Name"] = Ability,
+			}
+		}
+        RSRF:InvokeServer(unpack(args))
+	end)
+end
+
+local Functions:Sell = function(Tower, WaveTime)
+	spawn(function()
+        repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
+		local args = {
+			[1] = "Troops",
+			[2] = "Sell",
+			[3] = {
+				["Troop"] = PlacedTowers[Tower],
+			}
+		}
+		RSRF:InvokeServer(unpack(args))
+	end)
+end
+return Functions
