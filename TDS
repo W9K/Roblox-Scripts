@@ -34,7 +34,7 @@ local Wave =  function()
 end
 
 local Time =  function()
-    return GameState.Timer.Time.Value
+    return tostring(GameState.Timer.Time.Value)
 end
 
 function Functions:Skip(WaveTime)
