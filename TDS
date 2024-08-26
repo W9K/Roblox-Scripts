@@ -70,7 +70,7 @@ function Functions:Upgrade(Tower, WaveTime)
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
         repeat
             task.wait()
-        until PlacedTowers[Tower] and getgenv().Upgrading == false
+        until Towers:FindFirstChild(PlacedTowers[Tower]) and getgenv().Upgrading == false
         getgenv().Upgrading = true
         local args = {
             [1] = "Troops",
