@@ -24,6 +24,8 @@ local RS   = game:WaitForChild('ReplicatedStorage')
 local RSRF = RS:WaitForChild("RemoteFunction")
 local RSRE = RS:WaitForChild("RemoteEvent")
 
+game:WaitForChild('ReplicatedStorage'):WaitForChild("RemoteFunction")
+
 local Stats = Player.PlayerGui:WaitForChild("GameGui").Health
 local GameState = game.ReplicatedStorage:WaitForChild("State")
 
@@ -46,7 +48,7 @@ end
 function Functions:Place(Tower, WaveTime, Position)
     print("Place", Tower, WaveTime[1], WaveTime[2])
 	spawn(function()
-        repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
+        repeat task.wait() print("waiting to place", Tower) until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
         local args = {
             [1] = "Troops",
             [2] = "Place",
