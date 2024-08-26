@@ -38,7 +38,6 @@ local Time =  function()
 end
 
 function Functions:Skip(WaveTime)
-    print("Skip", WaveTime[1], WaveTime[2])
     spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
         RSRF:InvokeServer("Voting", "Skip")
@@ -46,9 +45,8 @@ function Functions:Skip(WaveTime)
 end 
 
 function Functions:Place(Tower, WaveTime, Position)
-    print("Place", Tower, WaveTime[1], WaveTime[2])
 	spawn(function()
-        repeat task.wait() print("waiting to place", Tower) until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
+        repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
         local args = {
             [1] = "Troops",
             [2] = "Place",
@@ -67,7 +65,6 @@ function Functions:Place(Tower, WaveTime, Position)
 end
 
 function Functions:Upgrade(Tower, WaveTime)
-    print("Upgrading", Tower, WaveTime[1], WaveTime[2])
 	spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
         local args = {
@@ -78,12 +75,14 @@ function Functions:Upgrade(Tower, WaveTime)
                 ["Troop"] = PlacedTowers[Tower],
             }
         }
-        RSRF:InvokeServer(unpack(args))
+        local upgradeCheck = nil
+        repeat task.wait()
+            upgradeCheck = RSRF:InvokeServer(unpack(args))
+        until upgradeCheck
 	end)
 end
 
 function Functions:Ability(Tower, WaveTime, Ability)
-    print("Ability", Tower, WaveTime[1], WaveTime[2])
 	spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
 		local args = {
@@ -95,12 +94,14 @@ function Functions:Ability(Tower, WaveTime, Ability)
 				["Name"] = Ability,
 			}
 		}
-        RSRF:InvokeServer(unpack(args))
+        local abilityCheck = nil
+        repeat task.wait()
+            abilityCheck = RSRF:InvokeServer(unpack(args))
+        until abilityCheck
 	end)
 end
 
 function Functions:Sell(Tower, WaveTime)
-    print("Sell", Tower, WaveTime[1], WaveTime[2])
 	spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
 		local args = {
@@ -110,7 +111,10 @@ function Functions:Sell(Tower, WaveTime)
 				["Troop"] = PlacedTowers[Tower],
 			}
 		}
-		RSRF:InvokeServer(unpack(args))
+        local sellCheck = nil
+        repeat task.wait()
+            sellCheck=RSRF:InvokeServer(unpack(args))
+        until sellCheck
 	end)
 end
 
