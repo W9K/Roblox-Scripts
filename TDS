@@ -37,6 +37,16 @@ local Time =  function()
     return tostring(GameState.Timer.Time.Value)
 end
 
+local previousNumber = nil
+function uniqueNumberGenerator()
+    local newNumber = math.random(1, 3)
+    if newNumber == previousNumber then
+        newNumber = (newNumber % 3) + 1
+    end
+    previousNumber = newNumber
+    return newNumber
+end
+
 function Functions:Skip(WaveTime)
     spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
@@ -64,14 +74,10 @@ function Functions:Place(Tower, WaveTime, Position)
 	end)
 end
 
-getgenv().Upgrading = true
 function Functions:Upgrade(Tower, WaveTime)
 	spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
-        repeat
-            task.wait()
-        until Towers:FindFirstChild(PlacedTowers[Tower]) and getgenv().Upgrading == false
-        getgenv().Upgrading = true
+        task.wait( uniqueNumberGenerator() )
         local args = {
             [1] = "Troops",
             [2] = "Upgrade",
@@ -84,7 +90,6 @@ function Functions:Upgrade(Tower, WaveTime)
         repeat task.wait()
             upgradeCheck = RSRF:InvokeServer(unpack(args))
         until upgradeCheck
-        getgenv().Upgrading = false
 	end)
 end
 
