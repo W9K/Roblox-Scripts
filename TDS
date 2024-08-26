@@ -7,6 +7,9 @@
     Sell(TowerIndex, {"Wave", "Time"})
     Ability(TowerIndex, {"Wave", "Time"}, "AbilityName")
     Skip({"Wave", "Time"})
+
+	this has little to no effort, buzzed off nicotine half of the time i was making this, so a lot of this is gonna look like junk
+
 ]]
 
 local Player 	= game:GetService("Players").LocalPlayer
