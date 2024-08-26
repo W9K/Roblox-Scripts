@@ -64,9 +64,14 @@ function Functions:Place(Tower, WaveTime, Position)
 	end)
 end
 
+getgenv().Upgrading = true
 function Functions:Upgrade(Tower, WaveTime)
 	spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
+        repeat
+            task.wait()
+        until PlacedTowers[Tower] and getgenv().Upgrading == false
+        getgenv().Upgrading = true
         local args = {
             [1] = "Troops",
             [2] = "Upgrade",
@@ -79,6 +84,7 @@ function Functions:Upgrade(Tower, WaveTime)
         repeat task.wait()
             upgradeCheck = RSRF:InvokeServer(unpack(args))
         until upgradeCheck
+        getgenv().Upgrading = false
 	end)
 end
 
