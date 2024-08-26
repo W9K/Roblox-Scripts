@@ -113,7 +113,7 @@ function Functions:Sell(Tower, WaveTime)
 end
 
 function Functions:Ping()
-   print("Pong") 
+   print("Pong 2") 
 end
 
 return Functions
