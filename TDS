@@ -23,17 +23,20 @@ local Functions     = {}
 local RS   = game:WaitForChild('ReplicatedStorage')
 local RSRF = RS:WaitForChild("RemoteFunction")
 local RSRE = RS:WaitForChild("RemoteEvent")
-local Stats= Player.PlayerGui:WaitForChild("GameGui").Health
+
+local Stats = Player.PlayerGui:WaitForChild("GameGui").Health
+local GameState = game.ReplicatedStorage:WaitForChild("State")
 
 local Wave =  function()
     return Stats["Wave"].Text:split(" ")[2]
 end
 
 local Time =  function()
-    return Stats["Time"].Text
+    return GameState.Timer.Time.Value
 end
 
 function Functions:Skip(WaveTime)
+    print("Skip", WaveTime[1], WaveTime[2])
     spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
         RSRF:InvokeServer("Voting", "Skip")
@@ -41,6 +44,7 @@ function Functions:Skip(WaveTime)
 end 
 
 function Functions:Place(Tower, WaveTime, Position)
+    print("Place", Tower, WaveTime[1], WaveTime[2])
 	spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
         local args = {
@@ -61,6 +65,7 @@ function Functions:Place(Tower, WaveTime, Position)
 end
 
 function Functions:Upgrade(Tower, WaveTime)
+    print("Upgrading", Tower, WaveTime[1], WaveTime[2])
 	spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
         local args = {
@@ -76,6 +81,7 @@ function Functions:Upgrade(Tower, WaveTime)
 end
 
 function Functions:Ability(Tower, WaveTime, Ability)
+    print("Ability", Tower, WaveTime[1], WaveTime[2])
 	spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
 		local args = {
@@ -92,6 +98,7 @@ function Functions:Ability(Tower, WaveTime, Ability)
 end
 
 function Functions:Sell(Tower, WaveTime)
+    print("Sell", Tower, WaveTime[1], WaveTime[2])
 	spawn(function()
         repeat task.wait() until (Wave() == WaveTime[1]) and (Time()==WaveTime[2])
 		local args = {
